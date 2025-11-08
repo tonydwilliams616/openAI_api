@@ -2,6 +2,7 @@ import os
 from openai import OpenAI
 import requests
 import shutil
+from PIL import Image
 
 os.environ['OPENAI_API_KEY'] = 'API-KEY'
 
@@ -32,3 +33,5 @@ if image_resource.status_code == 200:
         shutil.copyfileobj(image_resource.raw, f)
 else:
     print('error accessing image')
+
+Image.open(image_name)
