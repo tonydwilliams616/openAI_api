@@ -1,5 +1,7 @@
 import os
 from openai import OpenAI
+import requests
+import shutil
 
 os.environ['OPENAI_API_KEY'] = 'API-KEY'
 
@@ -17,4 +19,16 @@ response = client.images.generate(
     n=1
 )
 
+image_url = response.data[0].url
+
 print(response.data[0].url)
+
+image_resource = requests.get(image_url, stream=True )
+# print image url status code
+
+if image_resource.status_code == 200:
+    image_name = 'dalle-ginger-dog.png'
+    with open(image_name, 'wb') as f:
+        shutil.copyfileobj(image_resource.raw, f)
+else:
+    print('error accessing image')
